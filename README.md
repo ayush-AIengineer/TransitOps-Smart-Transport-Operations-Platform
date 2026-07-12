@@ -31,30 +31,6 @@ Logistics companies still rely on **spreadsheets and manual logbooks** to manage
 
 **TransitOps** solves ALL of these by providing a **single-pane-of-glass** platform for end-to-end fleet operations.
 
----
-
-## 🧠 Why This Solution Wins (Hackathon Strategy)
-
-> **As a 30+ hackathon winner, here's the strategic thinking behind every architectural decision:**
-
-### 🎯 Key Differentiators
-
-1. **Odoo as the Platform** — Instead of building from scratch, we leverage Odoo 18's mature framework to get authentication, RBAC, ORM, reporting, and a beautiful UI out of the box. This lets us focus 100% on business logic and domain-specific features.
-
-2. **Event-Driven Status Machine** — All status transitions (Vehicle, Driver, Trip) are enforced via Odoo's `onchange`, `constrains`, and `write` overrides — making the system **self-healing** and **tamper-proof**.
-
-3. **Automated Business Rules as Code** — Every mandatory rule from the problem statement is a Python `@api.constrains` decorator or an overridden `write`/`create` method. Zero manual enforcement needed.
-
-4. **Real-Time KPI Dashboard** — Not just static numbers — live-computed KPIs using Odoo's `compute` fields with `store=True` for performance.
-
-5. **Full Audit Trail** — Odoo's built-in `mail.thread` mixin gives us automatic tracking of every field change, status transition, and user action.
-
-6. **One-Click PDF Reports** — Leveraging Odoo's QWeb report engine for professional PDF exports of trips, maintenance logs, and analytics.
-
-7. **Modular Architecture** — Each domain (vehicles, drivers, trips, maintenance, fuel) is a separate Odoo model but interconnected via relational fields and automated actions.
-
----
-
 ## 🏗 Solution Architecture
 
 ```
