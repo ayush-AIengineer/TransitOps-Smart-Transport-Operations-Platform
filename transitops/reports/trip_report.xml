@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ================================================================== -->
+    <!-- TRIP REPORT ACTION                                                  -->
+    <!-- ================================================================== -->
+    <record id="action_report_transit_trip" model="ir.actions.report">
+        <field name="name">Trip Report</field>
+        <field name="model">transit.trip</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">transitops.report_transit_trip</field>
+        <field name="report_file">transitops.report_transit_trip</field>
+        <field name="binding_model_id" ref="model_transit_trip"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- TRIP REPORT TEMPLATE                                                -->
+    <!-- ================================================================== -->
+    <template id="report_transit_trip">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="trip">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <!-- Header -->
+                        <div class="row mb-4">
+                            <div class="col-12 text-center">
+                                <h1>Trip Report</h1>
+                                <h2 t-field="trip.name"/>
+                            </div>
+                        </div>
+
+                        <!-- Status Badge -->
+                        <div class="row mb-4">
+                            <div class="col-12 text-center">
+                                <span class="badge bg-primary fs-5" t-if="trip.state == 'draft'">Draft</span>
+                                <span class="badge bg-info fs-5" t-if="trip.state == 'dispatched'">Dispatched</span>
+                                <span class="badge bg-success fs-5" t-if="trip.state == 'completed'">Completed</span>
+                                <span class="badge bg-danger fs-5" t-if="trip.state == 'cancelled'">Cancelled</span>
+                            </div>
+                        </div>
+
+                        <!-- Route Details -->
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <h3>Route Details</h3>
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td class="fw-bold" width="30%">Source</td>
+                                        <td t-field="trip.source"/>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Destination</td>
+                                        <td t-field="trip.destination"/>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Planned Distance</td>
+                                        <td><t t-esc="trip.planned_distance"/> km</td>
+                                    </tr>
+                                    <tr t-if="trip.actual_distance">
+                                        <td class="fw-bold">Actual Distance</td>
+                                        <td><t t-esc="trip.actual_distance"/> km</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Assignment Details -->
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <h3>Vehicle</h3>
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td class="fw-bold">Vehicle</td>
+                                        <td t-field="trip.vehicle_id"/>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Max Capacity</td>
+                                        <td><t t-esc="trip.vehicle_max_capacity"/> kg</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Cargo Weight</td>
+                                        <td><t t-esc="trip.cargo_weight"/> kg</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-6">
+                                <h3>Driver</h3>
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td class="fw-bold">Driver</td>
+                                        <td t-field="trip.driver_id"/>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">License Expiry</td>
+                                        <td t-field="trip.driver_license_expiry"/>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Trip Completion Details -->
+                        <div class="row mb-3" t-if="trip.state == 'completed'">
+                            <div class="col-12">
+                                <h3>Completion Details</h3>
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td class="fw-bold" width="30%">Start Odometer</td>
+                                        <td><t t-esc="trip.start_odometer"/> km</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">End Odometer</td>
+                                        <td><t t-esc="trip.end_odometer"/> km</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Fuel Consumed</td>
+                                        <td><t t-esc="trip.fuel_consumed"/> liters</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Fuel Efficiency</td>
+                                        <td><t t-esc="'%.2f' % trip.fuel_efficiency"/> km/L</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Dispatch Date</td>
+                                        <td t-field="trip.dispatch_date"/>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Completion Date</td>
+                                        <td t-field="trip.completion_date"/>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Notes -->
+                        <div class="row mb-3" t-if="trip.notes">
+                            <div class="col-12">
+                                <h3>Notes</h3>
+                                <p t-field="trip.notes"/>
+                            </div>
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="row mt-4">
+                            <div class="col-12 text-center text-muted">
+                                <small>Generated by TransitOps - Smart Transport Operations Platform</small>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

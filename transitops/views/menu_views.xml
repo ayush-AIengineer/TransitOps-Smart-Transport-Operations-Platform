@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ================================================================== -->
+    <!-- ROOT MENU                                                           -->
+    <!-- ================================================================== -->
+    <menuitem id="menu_transit_root"
+              name="TransitOps"
+              web_icon="transitops,static/description/icon.png"
+              sequence="1"/>
+
+    <!-- ================================================================== -->
+    <!-- DASHBOARD MENU                                                      -->
+    <!-- ================================================================== -->
+    <menuitem id="menu_transit_dashboard"
+              name="Dashboard"
+              parent="menu_transit_root"
+              action="action_transit_dashboard"
+              sequence="1"/>
+
+    <!-- ================================================================== -->
+    <!-- VEHICLES MENU                                                       -->
+    <!-- ================================================================== -->
+    <menuitem id="menu_transit_vehicles_parent"
+              name="Vehicles"
+              parent="menu_transit_root"
+              sequence="10"/>
+
+    <menuitem id="menu_transit_vehicles"
+              name="All Vehicles"
+              parent="menu_transit_vehicles_parent"
+              action="action_transit_vehicle"
+              sequence="1"/>
+
+    <!-- ================================================================== -->
+    <!-- DRIVERS MENU                                                        -->
+    <!-- ================================================================== -->
+    <menuitem id="menu_transit_drivers_parent"
+              name="Drivers"
+              parent="menu_transit_root"
+              sequence="20"/>
+
+    <menuitem id="menu_transit_drivers"
+              name="All Drivers"
+              parent="menu_transit_drivers_parent"
+              action="action_transit_driver"
+              sequence="1"/>
+
+    <!-- ================================================================== -->
+    <!-- TRIPS MENU                                                          -->
+    <!-- ================================================================== -->
+    <menuitem id="menu_transit_trips_parent"
+              name="Trips"
+              parent="menu_transit_root"
+              sequence="30"/>
+
+    <menuitem id="menu_transit_trips"
+              name="All Trips"
+              parent="menu_transit_trips_parent"
+              action="action_transit_trip"
+              sequence="1"/>
+
+    <!-- ================================================================== -->
+    <!-- MAINTENANCE MENU                                                    -->
+    <!-- ================================================================== -->
+    <menuitem id="menu_transit_maintenance_parent"
+              name="Maintenance"
+              parent="menu_transit_root"
+              sequence="40"/>
+
+    <menuitem id="menu_transit_maintenance"
+              name="Maintenance Records"
+              parent="menu_transit_maintenance_parent"
+              action="action_transit_maintenance"
+              sequence="1"/>
+
+    <!-- ================================================================== -->
+    <!-- FINANCE MENU                                                        -->
+    <!-- ================================================================== -->
+    <menuitem id="menu_transit_finance_parent"
+              name="Finance"
+              parent="menu_transit_root"
+              sequence="50"/>
+
+    <menuitem id="menu_transit_fuel_logs"
+              name="Fuel Logs"
+              parent="menu_transit_finance_parent"
+              action="action_transit_fuel_log"
+              sequence="1"/>
+
+    <menuitem id="menu_transit_expenses"
+              name="Expenses"
+              parent="menu_transit_finance_parent"
+              action="action_transit_expense"
+              sequence="2"/>
+
+    <!-- ================================================================== -->
+    <!-- REPORTS MENU                                                        -->
+    <!-- ================================================================== -->
+    <menuitem id="menu_transit_reports_parent"
+              name="Reports"
+              parent="menu_transit_root"
+              groups="transitops.group_transit_manager,transitops.group_transit_safety,transitops.group_transit_finance"
+              sequence="60"/>
+
+    <menuitem id="menu_transit_vehicle_report"
+              name="Vehicle Analytics"
+              parent="menu_transit_reports_parent"
+              action="action_transit_vehicle"
+              sequence="1"/>
+
+    <menuitem id="menu_transit_trip_report"
+              name="Trip Analytics"
+              parent="menu_transit_reports_parent"
+              action="action_transit_trip"
+              sequence="2"/>
+
+    <menuitem id="menu_transit_fuel_report"
+              name="Fuel Cost Analysis"
+              parent="menu_transit_reports_parent"
+              action="action_transit_fuel_log"
+              sequence="3"/>
+
+    <menuitem id="menu_transit_expense_report"
+              name="Expense Analysis"
+              parent="menu_transit_reports_parent"
+              action="action_transit_expense"
+              sequence="4"/>
+
+</odoo>

@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ================================================================== -->
+    <!-- TRIP FORM VIEW                                                      -->
+    <!-- ================================================================== -->
+    <record id="view_transit_trip_form" model="ir.ui.view">
+        <field name="name">transit.trip.form</field>
+        <field name="model">transit.trip</field>
+        <field name="arch" type="xml">
+            <form string="Trip">
+                <header>
+                    <button name="action_dispatch" string="Dispatch"
+                            type="object" class="btn-primary"
+                            invisible="state != 'draft'"
+                            groups="transitops.group_transit_manager,transitops.group_transit_driver"/>
+                    <button name="action_complete" string="Complete Trip"
+                            type="object" class="btn-success"
+                            invisible="state != 'dispatched'"
+                            groups="transitops.group_transit_manager,transitops.group_transit_driver"/>
+                    <button name="action_cancel" string="Cancel"
+                            type="object" class="btn-danger"
+                            invisible="state not in ('draft', 'dispatched')"
+                            groups="transitops.group_transit_manager,transitops.group_transit_driver"
+                            confirm="Are you sure you want to cancel this trip?"/>
+                    <button name="action_reset_to_draft" string="Reset to Draft"
+                            type="object" class="btn-secondary"
+                            invisible="state != 'cancelled'"
+                            groups="transitops.group_transit_manager"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,dispatched,completed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Route Details">
+                            <field name="source" readonly="state != 'draft'"/>
+                            <field name="destination" readonly="state != 'draft'"/>
+                            <field name="planned_distance" readonly="state != 'draft'"/>
+                            <field name="actual_distance"
+                                   readonly="state != 'dispatched'"/>
+                        </group>
+                        <group string="Assignment">
+                            <field name="vehicle_id" readonly="state != 'draft'"
+                                   options="{'no_create': True}"/>
+                            <field name="vehicle_max_capacity"/>
+                            <field name="driver_id" readonly="state != 'draft'"
+                                   options="{'no_create': True}"/>
+                            <field name="driver_license_expiry"/>
+                            <field name="cargo_weight" readonly="state != 'draft'"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Trip Completion" invisible="state not in ('dispatched', 'completed')">
+                            <field name="start_odometer" readonly="1"/>
+                            <field name="end_odometer"
+                                   readonly="state != 'dispatched'"/>
+                            <field name="fuel_consumed"
+                                   readonly="state != 'dispatched'"/>
+                            <field name="fuel_efficiency"/>
+                        </group>
+                        <group string="Dates">
+                            <field name="dispatch_date" readonly="1"/>
+                            <field name="completion_date" readonly="1"/>
+                        </group>
+                    </group>
+                    <group invisible="state != 'cancelled'">
+                        <field name="cancellation_reason"
+                               placeholder="Reason for cancellation..."/>
+                    </group>
+                    <notebook>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Trip notes..."/>
+                        </page>
+                        <page string="Fuel Logs" name="fuel_logs">
+                            <field name="fuel_log_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="date"/>
+                                    <field name="liters"/>
+                                    <field name="cost" widget="monetary"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Expenses" name="expenses">
+                            <field name="expense_ids"
+                                   readonly="state in ('completed', 'cancelled')">
+                                <list editable="bottom">
+                                    <field name="expense_type"/>
+                                    <field name="amount" widget="monetary"/>
+                                    <field name="date"/>
+                                    <field name="description"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- TRIP LIST VIEW                                                      -->
+    <!-- ================================================================== -->
+    <record id="view_transit_trip_list" model="ir.ui.view">
+        <field name="name">transit.trip.list</field>
+        <field name="model">transit.trip</field>
+        <field name="arch" type="xml">
+            <list string="Trips"
+                  decoration-success="state == 'completed'"
+                  decoration-info="state == 'dispatched'"
+                  decoration-warning="state == 'draft'"
+                  decoration-danger="state == 'cancelled'">
+                <field name="name"/>
+                <field name="source"/>
+                <field name="destination"/>
+                <field name="vehicle_id"/>
+                <field name="driver_id"/>
+                <field name="cargo_weight"/>
+                <field name="planned_distance"/>
+                <field name="actual_distance" optional="show"/>
+                <field name="fuel_consumed" optional="show"/>
+                <field name="fuel_efficiency" optional="hide"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'completed'"
+                       decoration-info="state == 'dispatched'"
+                       decoration-warning="state == 'draft'"
+                       decoration-danger="state == 'cancelled'"/>
+                <field name="dispatch_date" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- TRIP KANBAN VIEW                                                    -->
+    <!-- ================================================================== -->
+    <record id="view_transit_trip_kanban" model="ir.ui.view">
+        <field name="name">transit.trip.kanban</field>
+        <field name="model">transit.trip</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_mobile" sample="1">
+                <field name="name"/>
+                <field name="source"/>
+                <field name="destination"/>
+                <field name="vehicle_id"/>
+                <field name="driver_id"/>
+                <field name="state"/>
+                <field name="color"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click">
+                            <div class="o_kanban_record_top mb8">
+                                <div class="o_kanban_record_headings">
+                                    <strong class="o_kanban_record_title">
+                                        <field name="name"/>
+                                    </strong>
+                                </div>
+                                <field name="state" widget="label_selection"
+                                       options="{'classes': {'draft': 'warning', 'dispatched': 'info', 'completed': 'success', 'cancelled': 'danger'}}"/>
+                            </div>
+                            <div class="o_kanban_record_body">
+                                <div><field name="source"/> → <field name="destination"/></div>
+                                <div><strong>Vehicle:</strong> <field name="vehicle_id"/></div>
+                                <div><strong>Driver:</strong> <field name="driver_id"/></div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- TRIP SEARCH VIEW                                                    -->
+    <!-- ================================================================== -->
+    <record id="view_transit_trip_search" model="ir.ui.view">
+        <field name="name">transit.trip.search</field>
+        <field name="model">transit.trip</field>
+        <field name="arch" type="xml">
+            <search string="Search Trips">
+                <field name="name"/>
+                <field name="source"/>
+                <field name="destination"/>
+                <field name="vehicle_id"/>
+                <field name="driver_id"/>
+                <separator/>
+                <filter string="Draft" name="draft"
+                        domain="[('state', '=', 'draft')]"/>
+                <filter string="Dispatched" name="dispatched"
+                        domain="[('state', '=', 'dispatched')]"/>
+                <filter string="Completed" name="completed"
+                        domain="[('state', '=', 'completed')]"/>
+                <filter string="Cancelled" name="cancelled"
+                        domain="[('state', '=', 'cancelled')]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_state"
+                            context="{'group_by': 'state'}"/>
+                    <filter string="Vehicle" name="group_vehicle"
+                            context="{'group_by': 'vehicle_id'}"/>
+                    <filter string="Driver" name="group_driver"
+                            context="{'group_by': 'driver_id'}"/>
+                    <filter string="Vehicle Type" name="group_vehicle_type"
+                            context="{'group_by': 'vehicle_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- TRIP GRAPH VIEW                                                     -->
+    <!-- ================================================================== -->
+    <record id="view_transit_trip_graph" model="ir.ui.view">
+        <field name="name">transit.trip.graph</field>
+        <field name="model">transit.trip</field>
+        <field name="arch" type="xml">
+            <graph string="Trip Analytics" type="bar">
+                <field name="state" type="row"/>
+                <field name="actual_distance" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- TRIP ACTION                                                         -->
+    <!-- ================================================================== -->
+    <record id="action_transit_trip" model="ir.actions.act_window">
+        <field name="name">Trips</field>
+        <field name="res_model">transit.trip</field>
+        <field name="view_mode">list,kanban,form,graph</field>
+        <field name="search_view_id" ref="view_transit_trip_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first trip!
+            </p>
+            <p>
+                Select a vehicle, driver, source and destination to create a trip.
+            </p>
+        </field>
+    </record>
+
+</odoo>

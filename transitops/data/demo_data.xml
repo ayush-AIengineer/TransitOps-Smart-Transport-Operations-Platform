@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- ============================================================== -->
+        <!-- DEMO USERS                                                      -->
+        <!-- ============================================================== -->
+        <record id="user_fleet_manager" model="res.users">
+            <field name="name">Rajesh Kumar (Fleet Manager)</field>
+            <field name="login">fleet@transitops.com</field>
+            <field name="password">fleet123</field>
+            <field name="groups_id" eval="[
+                (4, ref('transitops.group_transit_manager')),
+                (4, ref('base.group_user')),
+            ]"/>
+        </record>
+
+        <record id="user_driver" model="res.users">
+            <field name="name">Priya Singh (Dispatcher)</field>
+            <field name="login">driver@transitops.com</field>
+            <field name="password">driver123</field>
+            <field name="groups_id" eval="[
+                (4, ref('transitops.group_transit_driver')),
+                (4, ref('base.group_user')),
+            ]"/>
+        </record>
+
+        <record id="user_safety" model="res.users">
+            <field name="name">Amit Sharma (Safety Officer)</field>
+            <field name="login">safety@transitops.com</field>
+            <field name="password">safety123</field>
+            <field name="groups_id" eval="[
+                (4, ref('transitops.group_transit_safety')),
+                (4, ref('base.group_user')),
+            ]"/>
+        </record>
+
+        <record id="user_finance" model="res.users">
+            <field name="name">Neha Patel (Financial Analyst)</field>
+            <field name="login">finance@transitops.com</field>
+            <field name="password">finance123</field>
+            <field name="groups_id" eval="[
+                (4, ref('transitops.group_transit_finance')),
+                (4, ref('base.group_user')),
+            ]"/>
+        </record>
+
+        <!-- ============================================================== -->
+        <!-- DEMO VEHICLES                                                   -->
+        <!-- ============================================================== -->
+        <record id="vehicle_01" model="transit.vehicle">
+            <field name="name">Tata Ace Gold</field>
+            <field name="registration_no">MH-01-AB-1234</field>
+            <field name="vehicle_type">mini_truck</field>
+            <field name="max_capacity">750</field>
+            <field name="odometer">15230</field>
+            <field name="acquisition_cost">650000</field>
+            <field name="status">available</field>
+            <field name="region">Mumbai</field>
+        </record>
+
+        <record id="vehicle_02" model="transit.vehicle">
+            <field name="name">Ashok Leyland Ecomet</field>
+            <field name="registration_no">MH-02-CD-5678</field>
+            <field name="vehicle_type">truck</field>
+            <field name="max_capacity">5000</field>
+            <field name="odometer">45670</field>
+            <field name="acquisition_cost">2500000</field>
+            <field name="status">available</field>
+            <field name="region">Pune</field>
+        </record>
+
+        <record id="vehicle_03" model="transit.vehicle">
+            <field name="name">Mahindra Bolero Pickup</field>
+            <field name="registration_no">MH-03-EF-9012</field>
+            <field name="vehicle_type">van</field>
+            <field name="max_capacity">1200</field>
+            <field name="odometer">32100</field>
+            <field name="acquisition_cost">950000</field>
+            <field name="status">available</field>
+            <field name="region">Mumbai</field>
+        </record>
+
+        <record id="vehicle_04" model="transit.vehicle">
+            <field name="name">Eicher Pro 3015</field>
+            <field name="registration_no">MH-04-GH-3456</field>
+            <field name="vehicle_type">truck</field>
+            <field name="max_capacity">8000</field>
+            <field name="odometer">78900</field>
+            <field name="acquisition_cost">3200000</field>
+            <field name="status">available</field>
+            <field name="region">Nagpur</field>
+        </record>
+
+        <record id="vehicle_05" model="transit.vehicle">
+            <field name="name">Van-05 (Demo)</field>
+            <field name="registration_no">MH-05-IJ-7890</field>
+            <field name="vehicle_type">van</field>
+            <field name="max_capacity">500</field>
+            <field name="odometer">12000</field>
+            <field name="acquisition_cost">800000</field>
+            <field name="status">available</field>
+            <field name="region">Pune</field>
+        </record>
+
+        <!-- ============================================================== -->
+        <!-- DEMO DRIVERS                                                    -->
+        <!-- ============================================================== -->
+        <record id="driver_01" model="transit.driver">
+            <field name="name">Alex (Demo Driver)</field>
+            <field name="license_number">DL-2024-0001</field>
+            <field name="license_category">hmv</field>
+            <field name="license_expiry">2027-06-15</field>
+            <field name="contact_number">+91 98765 43210</field>
+            <field name="email">alex@transitops.com</field>
+            <field name="safety_score">95</field>
+            <field name="status">available</field>
+        </record>
+
+        <record id="driver_02" model="transit.driver">
+            <field name="name">Rahul Verma</field>
+            <field name="license_number">DL-2024-0002</field>
+            <field name="license_category">hgmv</field>
+            <field name="license_expiry">2027-03-20</field>
+            <field name="contact_number">+91 98765 43211</field>
+            <field name="email">rahul@transitops.com</field>
+            <field name="safety_score">88</field>
+            <field name="status">available</field>
+        </record>
+
+        <record id="driver_03" model="transit.driver">
+            <field name="name">Suresh Patil</field>
+            <field name="license_number">DL-2024-0003</field>
+            <field name="license_category">hmv</field>
+            <field name="license_expiry">2026-08-10</field>
+            <field name="contact_number">+91 98765 43212</field>
+            <field name="email">suresh@transitops.com</field>
+            <field name="safety_score">72</field>
+            <field name="status">available</field>
+        </record>
+
+        <record id="driver_04" model="transit.driver">
+            <field name="name">Vikram Singh</field>
+            <field name="license_number">DL-2024-0004</field>
+            <field name="license_category">transport</field>
+            <field name="license_expiry">2027-12-31</field>
+            <field name="contact_number">+91 98765 43213</field>
+            <field name="email">vikram@transitops.com</field>
+            <field name="safety_score">91</field>
+            <field name="status">available</field>
+        </record>
+
+        <record id="driver_05" model="transit.driver">
+            <field name="name">Deepak Sharma</field>
+            <field name="license_number">DL-2024-0005</field>
+            <field name="license_category">hmv</field>
+            <field name="license_expiry">2026-07-25</field>
+            <field name="contact_number">+91 98765 43214</field>
+            <field name="email">deepak@transitops.com</field>
+            <field name="safety_score">45</field>
+            <field name="status">available</field>
+        </record>
+
+    </data>
+</odoo>

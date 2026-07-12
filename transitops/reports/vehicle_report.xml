@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ================================================================== -->
+    <!-- VEHICLE REPORT ACTION                                               -->
+    <!-- ================================================================== -->
+    <record id="action_report_transit_vehicle" model="ir.actions.report">
+        <field name="name">Vehicle Report</field>
+        <field name="model">transit.vehicle</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">transitops.report_transit_vehicle</field>
+        <field name="report_file">transitops.report_transit_vehicle</field>
+        <field name="binding_model_id" ref="model_transit_vehicle"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- VEHICLE REPORT TEMPLATE                                             -->
+    <!-- ================================================================== -->
+    <template id="report_transit_vehicle">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="vehicle">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <!-- Header -->
+                        <div class="row mb-4">
+                            <div class="col-12 text-center">
+                                <h1>Vehicle Status Report</h1>
+                                <h2>
+                                    [<t t-esc="vehicle.registration_no"/>]
+                                    <t t-esc="vehicle.name"/>
+                                </h2>
+                            </div>
+                        </div>
+
+                        <!-- Vehicle Info -->
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <h3>Vehicle Details</h3>
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td class="fw-bold">Registration</td>
+                                        <td t-field="vehicle.registration_no"/>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Type</td>
+                                        <td t-field="vehicle.vehicle_type"/>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Max Capacity</td>
+                                        <td><t t-esc="vehicle.max_capacity"/> kg</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Odometer</td>
+                                        <td><t t-esc="vehicle.odometer"/> km</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Status</td>
+                                        <td t-field="vehicle.status"/>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Region</td>
+                                        <td t-field="vehicle.region"/>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-6">
+                                <h3>Financial Summary</h3>
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td class="fw-bold">Acquisition Cost</td>
+                                        <td t-field="vehicle.acquisition_cost" t-options='{"widget": "monetary"}'/>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Total Fuel Cost</td>
+                                        <td t-field="vehicle.total_fuel_cost" t-options='{"widget": "monetary"}'/>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Total Maintenance</td>
+                                        <td t-field="vehicle.total_maintenance_cost" t-options='{"widget": "monetary"}'/>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Other Expenses</td>
+                                        <td t-field="vehicle.total_expense" t-options='{"widget": "monetary"}'/>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <td class="fw-bold">Total Ops Cost</td>
+                                        <td class="fw-bold" t-field="vehicle.total_ops_cost" t-options='{"widget": "monetary"}'/>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Performance -->
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <h3>Performance Metrics</h3>
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td class="fw-bold" width="30%">Total Trips</td>
+                                        <td><t t-esc="vehicle.total_trips"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Total Distance</td>
+                                        <td><t t-esc="vehicle.total_distance"/> km</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Fuel Efficiency</td>
+                                        <td><t t-esc="'%.2f' % vehicle.fuel_efficiency"/> km/L</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Vehicle ROI</td>
+                                        <td><t t-esc="'%.1f' % vehicle.vehicle_roi"/>%</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="row mt-4">
+                            <div class="col-12 text-center text-muted">
+                                <small>Generated by TransitOps - Smart Transport Operations Platform</small>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

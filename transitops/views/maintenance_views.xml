@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ================================================================== -->
+    <!-- MAINTENANCE FORM VIEW                                               -->
+    <!-- ================================================================== -->
+    <record id="view_transit_maintenance_form" model="ir.ui.view">
+        <field name="name">transit.maintenance.form</field>
+        <field name="model">transit.maintenance</field>
+        <field name="arch" type="xml">
+            <form string="Maintenance Record">
+                <header>
+                    <button name="action_close" string="Close Maintenance"
+                            type="object" class="btn-primary"
+                            invisible="state != 'in_progress'"
+                            groups="transitops.group_transit_manager"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="in_progress,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Maintenance Details">
+                            <field name="vehicle_id"
+                                   readonly="state == 'done'"
+                                   options="{'no_create': True}"/>
+                            <field name="vehicle_registration"/>
+                            <field name="maintenance_type"
+                                   readonly="state == 'done'"/>
+                            <field name="technician"/>
+                        </group>
+                        <group string="Schedule &amp; Cost">
+                            <field name="start_date" readonly="state == 'done'"/>
+                            <field name="end_date" readonly="state != 'done'"/>
+                            <field name="duration_days"/>
+                            <field name="cost" widget="monetary"
+                                   readonly="state == 'done'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description" name="description">
+                            <field name="description"
+                                   placeholder="Describe the maintenance work..."/>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes" placeholder="Additional notes..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- MAINTENANCE LIST VIEW                                               -->
+    <!-- ================================================================== -->
+    <record id="view_transit_maintenance_list" model="ir.ui.view">
+        <field name="name">transit.maintenance.list</field>
+        <field name="model">transit.maintenance</field>
+        <field name="arch" type="xml">
+            <list string="Maintenance Records"
+                  decoration-warning="state == 'in_progress'"
+                  decoration-success="state == 'done'">
+                <field name="name"/>
+                <field name="vehicle_id"/>
+                <field name="vehicle_registration"/>
+                <field name="maintenance_type"/>
+                <field name="cost" widget="monetary"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="duration_days"/>
+                <field name="state" widget="badge"
+                       decoration-warning="state == 'in_progress'"
+                       decoration-success="state == 'done'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- MAINTENANCE KANBAN VIEW                                             -->
+    <!-- ================================================================== -->
+    <record id="view_transit_maintenance_kanban" model="ir.ui.view">
+        <field name="name">transit.maintenance.kanban</field>
+        <field name="model">transit.maintenance</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" sample="1">
+                <field name="name"/>
+                <field name="vehicle_id"/>
+                <field name="maintenance_type"/>
+                <field name="state"/>
+                <field name="color"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click">
+                            <div class="o_kanban_record_top mb8">
+                                <strong><field name="name"/></strong>
+                                <field name="state" widget="label_selection"
+                                       options="{'classes': {'in_progress': 'warning', 'done': 'success'}}"/>
+                            </div>
+                            <div>
+                                <strong>Vehicle:</strong> <field name="vehicle_id"/>
+                            </div>
+                            <div>
+                                <strong>Type:</strong> <field name="maintenance_type"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- MAINTENANCE SEARCH VIEW                                             -->
+    <!-- ================================================================== -->
+    <record id="view_transit_maintenance_search" model="ir.ui.view">
+        <field name="name">transit.maintenance.search</field>
+        <field name="model">transit.maintenance</field>
+        <field name="arch" type="xml">
+            <search string="Search Maintenance">
+                <field name="name"/>
+                <field name="vehicle_id"/>
+                <field name="vehicle_registration"/>
+                <separator/>
+                <filter string="In Progress" name="in_progress"
+                        domain="[('state', '=', 'in_progress')]"/>
+                <filter string="Completed" name="done"
+                        domain="[('state', '=', 'done')]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter string="Vehicle" name="group_vehicle"
+                            context="{'group_by': 'vehicle_id'}"/>
+                    <filter string="Type" name="group_type"
+                            context="{'group_by': 'maintenance_type'}"/>
+                    <filter string="Status" name="group_state"
+                            context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ================================================================== -->
+    <!-- MAINTENANCE ACTION                                                  -->
+    <!-- ================================================================== -->
+    <record id="action_transit_maintenance" model="ir.actions.act_window">
+        <field name="name">Maintenance</field>
+        <field name="res_model">transit.maintenance</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="search_view_id" ref="view_transit_maintenance_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No maintenance records yet!
+            </p>
+            <p>
+                Create a maintenance record to log vehicle service work.
+                The vehicle will automatically be set to "In Shop" status.
+            </p>
+        </field>
+    </record>
+
+</odoo>
