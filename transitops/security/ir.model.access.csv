@@ -1,7 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-# ═══════════════════════════════════════════════════════════════════════════
-# FLEET MANAGER — Full CRUD on all models
-# ═══════════════════════════════════════════════════════════════════════════
 access_vehicle_manager,transit.vehicle.manager,model_transit_vehicle,transitops.group_transit_manager,1,1,1,1
 access_driver_manager,transit.driver.manager,model_transit_driver,transitops.group_transit_manager,1,1,1,1
 access_trip_manager,transit.trip.manager,model_transit_trip,transitops.group_transit_manager,1,1,1,1
@@ -9,9 +6,6 @@ access_maintenance_manager,transit.maintenance.manager,model_transit_maintenance
 access_fuel_log_manager,transit.fuel.log.manager,model_transit_fuel_log,transitops.group_transit_manager,1,1,1,1
 access_expense_manager,transit.expense.manager,model_transit_expense,transitops.group_transit_manager,1,1,1,1
 access_dashboard_manager,transit.dashboard.manager,model_transit_dashboard,transitops.group_transit_manager,1,0,0,0
-# ═══════════════════════════════════════════════════════════════════════════
-# DRIVER / DISPATCHER — Trip focus + supporting read
-# ═══════════════════════════════════════════════════════════════════════════
 access_vehicle_driver,transit.vehicle.driver,model_transit_vehicle,transitops.group_transit_driver,1,0,0,0
 access_driver_driver,transit.driver.driver,model_transit_driver,transitops.group_transit_driver,1,0,0,0
 access_trip_driver,transit.trip.driver,model_transit_trip,transitops.group_transit_driver,1,1,1,0
@@ -19,9 +13,6 @@ access_maintenance_driver,transit.maintenance.driver,model_transit_maintenance,t
 access_fuel_log_driver,transit.fuel.log.driver,model_transit_fuel_log,transitops.group_transit_driver,1,0,1,0
 access_expense_driver,transit.expense.driver,model_transit_expense,transitops.group_transit_driver,1,0,1,0
 access_dashboard_driver,transit.dashboard.driver,model_transit_dashboard,transitops.group_transit_driver,1,0,0,0
-# ═══════════════════════════════════════════════════════════════════════════
-# SAFETY OFFICER — Driver compliance focus
-# ═══════════════════════════════════════════════════════════════════════════
 access_vehicle_safety,transit.vehicle.safety,model_transit_vehicle,transitops.group_transit_safety,1,0,0,0
 access_driver_safety,transit.driver.safety,model_transit_driver,transitops.group_transit_safety,1,1,1,0
 access_trip_safety,transit.trip.safety,model_transit_trip,transitops.group_transit_safety,1,0,0,0
@@ -29,9 +20,6 @@ access_maintenance_safety,transit.maintenance.safety,model_transit_maintenance,t
 access_fuel_log_safety,transit.fuel.log.safety,model_transit_fuel_log,transitops.group_transit_safety,1,0,0,0
 access_expense_safety,transit.expense.safety,model_transit_expense,transitops.group_transit_safety,1,0,0,0
 access_dashboard_safety,transit.dashboard.safety,model_transit_dashboard,transitops.group_transit_safety,1,0,0,0
-# ═══════════════════════════════════════════════════════════════════════════
-# FINANCIAL ANALYST — Expense & analytics focus
-# ═══════════════════════════════════════════════════════════════════════════
 access_vehicle_finance,transit.vehicle.finance,model_transit_vehicle,transitops.group_transit_finance,1,0,0,0
 access_driver_finance,transit.driver.finance,model_transit_driver,transitops.group_transit_finance,1,0,0,0
 access_trip_finance,transit.trip.finance,model_transit_trip,transitops.group_transit_finance,1,0,0,0

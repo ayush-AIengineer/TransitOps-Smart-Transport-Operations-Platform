@@ -55,7 +55,6 @@ Key Features:
         # Reports
         'reports/trip_report.xml',
         'reports/vehicle_report.xml',
-        'reports/maintenance_report.xml',
     ],
     'demo': [
         'data/demo_data.xml',
